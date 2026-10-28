@@ -7,6 +7,11 @@
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
+        <!-- Favicon: the company icon from System settings, or the default icon -->
+        @php($favicon = data_get($page, 'props.company.icon') ?? asset('favicon.ico'))
+        <link rel="icon" href="{{ $favicon }}" id="favicon">
+        <link rel="apple-touch-icon" href="{{ $favicon }}">
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -22,6 +27,7 @@
         <link rel="stylesheet" href="{{ asset('/assets/plugins/ui-range-slider/jquery-ui.css') }}">
         <link rel="stylesheet" href="{{ asset('/assets/css/main.css') }}">
         <link rel="stylesheet" href="{{ asset('/assets/css/custom.css') }}">
+        <link rel="stylesheet" href="{{ asset('/assets/css/brand.css') }}">
         @endif
         <!-- Scripts -->
         @routes
