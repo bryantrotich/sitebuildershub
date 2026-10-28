@@ -4,81 +4,81 @@
     <CRow>
         <CCol md="6">
             <h4>Subscriptions</h4>
-            <p class="text-muted">This page shows a list of all subscriptions on the platform. You can view the subscription details and search for specific subscriptions using the search bar.</p>
+            <p class="text-muted">Manage the subscription plans available to clients on the platform.</p>
         </CCol>
         <CCol md="6">
             <CButton color="primary" class="float-end" @click="showModal = true">Create Subscription</CButton>
         </CCol>                    
     </CRow>    
-    <CRow>
-        <CCol xs="12">
-        <CCard class="mb-4 shadow-sm border-0">
-            <CCardBody> 
-                <CTable>
-                    <CTableHead>
-                        <CTableRow>
-                            <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Price</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Users</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Status</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Default</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Created On</CTableHeaderCell>
-                            <CTableHeaderCell scope="col"></CTableHeaderCell>
-                        </CTableRow>
-                    </CTableHead>
-                    <CTableBody>
-                      <CTableRow v-if="isEmpty($props.subscriptions.data)">
-                            <CTableDataCell colspan="7" class="text-center">
-                                <h6 class="mb-0"><CIcon name="cil-exclamation-circle"/> Nothing Found Here. </h6>
-                            </CTableDataCell>
-                        </CTableRow>
-                        <CTableRow v-for="(subscription, index) in $props.subscriptions.data" :key="subscription.id">
-                            <CTableHeaderCell scope="row">{{ (index + 1) }}</CTableHeaderCell>
-                            <CTableDataCell>{{ subscription.name }}</CTableDataCell>
-                            <CTableDataCell>{{ subscription.currency_price }}</CTableDataCell>
-                            <CTableDataCell>{{ subscription.users_count }}</CTableDataCell>
-                            <CTableDataCell>
-                              <CBadge color="success" class="p-2" v-if="subscription.active">Active</CBadge>
-                              <CBadge color="warning" class="p-2" v-if="!subscription.active">Inactive</CBadge>
-                            </CTableDataCell>
-                            <CTableDataCell >
-                              <CIcon name="cil-check" class="text-success" v-if="subscription.default" />
-                              <CIcon name="cil-x-circle" class="text-danger"  v-if="!subscription.default" />
-                            </CTableDataCell>
-                            <CTableDataCell>{{ moment(subscription.created_at).format('MMMM Do YYYY') }}</CTableDataCell>
-                            <CTableDataCell>
-                                <CDropdown>
-                                    <CDropdownToggle color="link" :caret="false" class="p-0"><CIcon name="cil-options" /></CDropdownToggle>
-                                    <CDropdownMenu>
-                                        <CDropdownItem href="#" @click="$edit(subscription)">Edit</CDropdownItem>
-                                        <CDropdownItem href="#" @click="$delete(subscription)">Delete</CDropdownItem>
-                                    </CDropdownMenu>
-                                </CDropdown>
-                            </CTableDataCell>
-                        </CTableRow>
-                    </CTableBody>
-                </CTable>
-                <CCol md="12">
-                    <CPagination aria-label="Page navigation example" size="sm" align="center">
-                      <CPaginationItem :href="page.url" v-for="(page, index) in pages" :key="index" :active="page.active"><span v-html="page.label"></span></CPaginationItem>
-                    </CPagination>         
-                </CCol>
-                <AddSubscription 
-                  :show="showModal" 
-                  :flash="$props.flash"                  
-                  @update:show="showModal = $event"
-                />
-                <EditSubscription 
-                  :show="editModal" 
-                  :subscription="$data.subscription"
-                  :flash="$props.flash"
-                  @update:show="editModal = $event"
-                />                
-            </CCardBody>
-        </CCard>
+
+    <CCard v-if="isEmpty($props.subscriptions.data)" class="mb-4 border-0 shadow-sm">
+        <CCardBody class="text-center">
+            <h6 class="mb-0"><CIcon icon="cil-ban"/> Nothing Found Here. </h6>
+        </CCardBody>
+    </CCard>
+
+    <CRow :xs="{ gutter: 4 }" class="mb-4">
+        <CCol v-for="subscription in $props.subscriptions.data" :key="subscription.id" :md="6" :xl="4">
+            <CCard class="h-100 border-0 shadow-sm">
+                <CCardBody class="d-flex flex-column">
+                    <div class="d-flex align-items-start">
+                        <div>
+                            <h5 class="mb-1">{{ subscription.name }}</h5>
+                            <div class="d-flex gap-1">
+                                <CBadge color="success" v-if="subscription.active">Active</CBadge>
+                                <CBadge color="warning" v-else>Inactive</CBadge>
+                                <CBadge color="primary" v-if="subscription.default">Default</CBadge>
+                            </div>
+                        </div>
+                        <CDropdown class="ms-auto">
+                            <CDropdownToggle color="link" :caret="false" class="p-0"><CIcon icon="cil-options" /></CDropdownToggle>
+                            <CDropdownMenu>
+                                <CDropdownItem href="#" @click="$edit(subscription)">Edit</CDropdownItem>
+                                <CDropdownItem href="#" @click="$delete(subscription)">Delete</CDropdownItem>
+                            </CDropdownMenu>
+                        </CDropdown>
+                    </div>
+
+                    <div class="fs-3 fw-semibold my-3">{{ subscription.currency_price }}</div>
+                    <p class="small text-body-secondary">{{ subscription.description }}</p>
+
+                    <ul class="list-unstyled small mb-3">
+                        <li class="mb-1"><CIcon icon="cil-notes" class="me-2 text-primary" />{{ subscription.features?.max_posts ?? 0 }} postings allowed</li>
+                        <li class="mb-1" v-for="feature in features" :key="feature.key">
+                            <CIcon :icon="subscription.features?.[feature.key] ? 'cil-check' : 'cil-x-circle'" :class="`me-2 ${subscription.features?.[feature.key] ? 'text-success' : 'text-danger'}`" />{{ feature.label }}
+                        </li>
+                    </ul>
+
+                    <CRow class="mt-auto text-center g-0 border rounded">
+                        <CCol class="py-2 border-end">
+                            <div class="fw-semibold">{{ subscription.users_count }}</div>
+                            <div class="small text-body-secondary">Users</div>
+                        </CCol>
+                        <CCol class="py-2">
+                            <div class="fw-semibold">{{ moment(subscription.created_at).format('MMM D, YYYY') }}</div>
+                            <div class="small text-body-secondary">Created</div>
+                        </CCol>
+                    </CRow>
+                </CCardBody>
+            </CCard>
         </CCol>
     </CRow>
+
+    <CPagination aria-label="Page navigation" size="sm" align="center">
+        <CPaginationItem :href="page.url" v-for="(page, index) in pages" :key="index" :active="page.active"><span v-html="page.label"></span></CPaginationItem>
+    </CPagination>
+
+    <AddSubscription 
+        :show="showModal" 
+        :flash="$props.flash"                  
+        @update:show="showModal = $event"
+    />
+    <EditSubscription 
+        :show="editModal" 
+        :subscription="$data.subscription"
+        :flash="$props.flash"
+        @update:show="editModal = $event"
+    />                
 </AuthenticatedLayout>
 </template>
 
@@ -113,7 +113,13 @@ const $data: any = reactive({
   modal: false,
 });
 
-const pages = computed( () => !isEmpty($props.clients) ? $props.clients.links.filter( (link: any) => !isNull(link.url)) : [] );
+const features = [
+    { key: 'for_businesses',    label: 'For businesses' },
+    { key: 'for_professionals', label: 'For professionals' },
+    { key: 'can_comment',       label: 'Can comment' },
+];
+
+const pages = computed( () => !isEmpty($props.subscriptions) ? $props.subscriptions.links.filter( (link: any) => !isNull(link.url)) : [] );
 
 /**
  * Fetch categories from the server.

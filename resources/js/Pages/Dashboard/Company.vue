@@ -1,22 +1,19 @@
 <template>
     <AuthenticatedLayout>
         <Head title="Company | Dashboard" />
+        <SettingsTabs description="Company contact information and profile." />
         <CRow>
-            <CCol :md="12">
-                <h3>Company</h3>
-                <p>Contact information and profile</p>
-            </CCol>
             <CCol md="12"> 
                 <CRow>
                     <CCol md="6" xs="12">
-                        <CCard class="mb-4 shadow-sm border-0" id="logo-icon">
+                        <CCard class="mb-4 shadow-sm border-0" id="company">
                             <CCardBody>
-                                <CCol md="6">
+                                <CCol md="12">
                                     <CRow>
                                         <CCol md="12">
                                             <CFormInput
                                                 type="text"
-                                                label="First Name"
+                                                label="Company Name"
                                                 v-model="$data.form.name"
                                                 class="mb-2"
                                             />  
@@ -59,6 +56,7 @@
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { SettingsTabs } from '@/Components/Dashboard';
 import { computed, reactive, watch } from 'vue';
 import { pick } from 'lodash';
 import vueDropzone from 'dropzone-vue3'

@@ -1,38 +1,41 @@
 <template>
     <AuthenticatedLayout>
         <Head title="System | Dashboard" />
-        <CRow>
-            <CCol md="12">
-                <h3>System</h3>
-                <p>Mail Settings, Payment Gateway, App Logo and Icon.</p>
-            </CCol>
-            <CCol md="12"> 
-                <CRow>
-                    <CCol md="10">
-                        <LogoIconTab />
-                        <MailTab />
-                        <!-- <PaymentTab /> -->
-                    </CCol>
-                    <CCol md="2">
-                        <CNav class="flex-column position-fixed" variant="underline">
-                            <CNavItem>
-                                <CNavLink href="#logo-icon" class="py-0"> App Logo & Icon </CNavLink>
-                            </CNavItem>
-                            <CNavItem>
-                                <CNavLink href="#mail" class="py-0"> Mail Settings </CNavLink>
-                            </CNavItem>
-                            <CNavItem>
-                                <CNavLink href="#payment" class="py-0"> Payment Gateway </CNavLink>
-                            </CNavItem>
-                        </CNav>
-                    </CCol>
-                </CRow>
-            </CCol>
-        </CRow>
+        <SettingsTabs description="App logo and icon, mail, Google Maps and payment gateway settings." />
+        <CTabs :active-item-key="'logo-icon'">
+            <CTabList variant="underline" class="mb-3">
+                <CTab item-key="logo-icon"><CIcon icon="cil-applications" class="me-2" />App Logo &amp; Icon</CTab>
+                <CTab item-key="mail"><CIcon icon="cil-envelope-closed" class="me-2" />Mail Settings</CTab>
+                <CTab item-key="maps"><CIcon icon="cil-location-pin" class="me-2" />Google Maps</CTab>
+                <CTab item-key="payment"><CIcon icon="cil-money" class="me-2" />Payment Gateway</CTab>
+            </CTabList>
+            <CTabContent>
+                <CTabPanel item-key="logo-icon">
+                    <CRow>
+                        <CCol md="10"><LogoIconTab /></CCol>
+                    </CRow>
+                </CTabPanel>
+                <CTabPanel item-key="mail">
+                    <CRow>
+                        <CCol md="10"><MailTab /></CCol>
+                    </CRow>
+                </CTabPanel>
+                <CTabPanel item-key="maps">
+                    <CRow>
+                        <CCol md="10"><MapsTab /></CCol>
+                    </CRow>
+                </CTabPanel>
+                <CTabPanel item-key="payment">
+                    <CRow>
+                        <CCol md="10"><PaymentTab /></CCol>
+                    </CRow>
+                </CTabPanel>
+            </CTabContent>
+        </CTabs>
     </AuthenticatedLayout>
 </template>
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head } from '@inertiajs/vue3';
-import { LogoIconTab, MailTab, PaymentTab } from '@/Components/Dashboard';
+import { LogoIconTab, MailTab, MapsTab, PaymentTab, SettingsTabs } from '@/Components/Dashboard';
 </script>

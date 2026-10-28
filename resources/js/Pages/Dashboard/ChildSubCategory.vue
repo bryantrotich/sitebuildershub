@@ -2,62 +2,56 @@
 <AuthenticatedLayout>
     <Head title="Child Sub Categories" />
     <CRow>
-        <CCol xs="12">
-        <CCard class="mb-4">
-            <CCardBody> 
-                <CRow>
-                    <CCol md="6">
-                        <h4>Child Sub Categories</h4>
-                        <p class="text-muted">Manage your website child sub categories to organize content effectively.</p>
-                    </CCol>
-                    <CCol md="6">
-                        <CButton color="primary" class="float-end" @click="showModal = true">Add Child Sub Category</CButton>
-                    </CCol>
-                </CRow>
-                <CTable>
-                    <CTableHead>
-                        <CTableRow>
+        <CCol md="6">
+            <h4>Child Sub Categories</h4>
+            <p class="text-muted">Manage your website child sub categories to organize content effectively.</p>
+        </CCol>
+        <CCol md="6">
+            <CButton color="primary" class="float-end" @click="showModal = true">Add Child Sub Category</CButton>
+        </CCol>
+    </CRow>
+    <CCard class="mb-4 border-0 shadow-sm">
+        <CCardBody>
+            <CTable align="middle" hover responsive>
+                <CTableHead>
+                    <CTableRow>
                         <CTableHeaderCell scope="col">#</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Category</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Sub Category</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Created On</CTableHeaderCell>
                         <CTableHeaderCell scope="col"></CTableHeaderCell>
-                        </CTableRow>
-                    </CTableHead>
-                    <CTableBody>
-                        <CTableRow v-if="isEmpty($props.child_sub_categories.data)">
-                            <CTableDataCell colspan="6" class="text-center">
-                                <h6 class="mb-0"><CIcon name="cil-exclamation-circle"/> Nothing Found Here. </h6>
-                            </CTableDataCell>
-                        </CTableRow>
-                        <CTableRow v-for="(sub_category, index) in $props.child_sub_categories.data" :key="sub_category.id">
-                            <CTableDataCell scope="row">{{ index + 1 }}</CTableDataCell>
-                            <CTableDataCell>{{ sub_category.name }}</CTableDataCell>
-                            <CTableDataCell><CBadge color="primary">{{ sub_category.category.name }}</CBadge></CTableDataCell>
-                            <CTableDataCell><CBadge color="primary">{{ sub_category.sub_category.name }}</CBadge></CTableDataCell>
-                            <CTableDataCell>{{ sub_category.created_at }}</CTableDataCell>
-                            <CTableDataCell>
-                                <CDropdown>
-                                    <CDropdownToggle color="link" :caret="false" class="p-0"><CIcon name="cil-options" /></CDropdownToggle>
-                                    <CDropdownMenu>
-                                        <CDropdownItem href="#" @click="$edit(sub_category)">Edit</CDropdownItem>
-                                        <CDropdownItem href="#" @click="$delete(sub_category)">Delete</CDropdownItem>
-                                    </CDropdownMenu>
-                                </CDropdown>
-                            </CTableDataCell>
-                        </CTableRow>
-                    </CTableBody>
-                </CTable>
-                <CCol md="12">
-                    <CPagination aria-label="Page navigation example" size="sm" align="center">
-                        <CPaginationItem :href="page.url" v-for="(page, index) in pages" :key="index" :active="page.active"><span v-html="page.label"></span></CPaginationItem>
-                    </CPagination>         
-                </CCol>
-            </CCardBody>
-        </CCard>
-        </CCol>
-    </CRow>
+                    </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                    <CTableRow v-if="isEmpty($props.child_sub_categories.data)">
+                        <CTableDataCell colspan="6" class="text-center">
+                            <h6 class="mb-0"><CIcon icon="cil-ban"/> Nothing Found Here. </h6>
+                        </CTableDataCell>
+                    </CTableRow>
+                    <CTableRow v-for="(sub_category, index) in $props.child_sub_categories.data" :key="sub_category.id">
+                        <CTableHeaderCell scope="row">{{ ($props.child_sub_categories.from ?? 1) + index }}</CTableHeaderCell>
+                        <CTableDataCell class="fw-semibold">{{ sub_category.name }}</CTableDataCell>
+                        <CTableDataCell><CBadge color="primary">{{ sub_category.category?.name }}</CBadge></CTableDataCell>
+                        <CTableDataCell><CBadge color="info">{{ sub_category.sub_category?.name }}</CBadge></CTableDataCell>
+                        <CTableDataCell>{{ sub_category.created_at }}</CTableDataCell>
+                        <CTableDataCell class="text-end">
+                            <CDropdown>
+                                <CDropdownToggle color="link" :caret="false" class="p-0"><CIcon icon="cil-options" /></CDropdownToggle>
+                                <CDropdownMenu>
+                                    <CDropdownItem href="#" @click="$edit(sub_category)">Edit</CDropdownItem>
+                                    <CDropdownItem href="#" @click="$delete(sub_category)">Delete</CDropdownItem>
+                                </CDropdownMenu>
+                            </CDropdown>
+                        </CTableDataCell>
+                    </CTableRow>
+                </CTableBody>
+            </CTable>
+            <CPagination aria-label="Page navigation" size="sm" align="center">
+                <CPaginationItem :href="page.url" v-for="(page, index) in pages" :key="index" :active="page.active"><span v-html="page.label"></span></CPaginationItem>
+            </CPagination>
+        </CCardBody>
+    </CCard>
     <AddChildSubCategory 
         :categories="$props.categories"
         :show="showModal" 

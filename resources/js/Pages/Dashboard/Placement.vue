@@ -10,67 +10,63 @@
             <CButton color="primary" class="float-end" @click="showModal = true">Create placement</CButton>
         </CCol>                    
     </CRow>    
-    <CRow>
-        <CCol xs="12">
-        <CCard class="mb-4 border-0 shadow-sm">
-            <CCardBody> 
-                <CTable>
-                    <CTableHead>
-                        <CTableRow>
-                            <CTableHeaderCell scope="col">#</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Name</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Price</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Section</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Adverts</CTableHeaderCell>
-                            <CTableHeaderCell scope="col">Created On</CTableHeaderCell>
-                            <CTableHeaderCell scope="col"></CTableHeaderCell>
-                        </CTableRow>
-                    </CTableHead>
-                    <CTableBody>
-                      <CTableRow v-if="isEmpty($props.placements.data)">
-                            <CTableDataCell colspan="7" class="text-center">
-                                <h6 class="mb-0"><CIcon name="cil-exclamation-circle"/> Nothing Found Here. </h6>
-                            </CTableDataCell>
-                        </CTableRow>
-                        <CTableRow v-for="(placement, index) in $props.placements.data" :key="placement.id">
-                            <CTableHeaderCell scope="row">{{ (index + 1) }}</CTableHeaderCell>
-                            <CTableDataCell>{{ placement.name }}</CTableDataCell>
-                            <CTableDataCell>{{ placement.currency_price }}</CTableDataCell>
-                            <CTableDataCell><CBadge color="info" class="p-2">{{ placement.section }}</CBadge></CTableDataCell>
-                            <CTableDataCell>{{ placement.promotions_count }}</CTableDataCell>
-                            <CTableDataCell>{{ moment(placement.created_at).format('MMMM Do YYYY') }}</CTableDataCell>
-                            <CTableDataCell>
-                                <CDropdown>
-                                    <CDropdownToggle color="link" :caret="false" class="p-0"><CIcon name="cil-options" /></CDropdownToggle>
-                                    <CDropdownMenu>
-                                        <CDropdownItem href="#" @click="$edit(placement)">Edit</CDropdownItem>
-                                        <CDropdownItem href="#" @click="$delete(placement)">Delete</CDropdownItem>
-                                    </CDropdownMenu>
-                                </CDropdown>
-                            </CTableDataCell>
-                        </CTableRow>
-                    </CTableBody>
-                </CTable>
-                <CCol md="12">
-                    <CPagination aria-label="Page navigation example" size="sm" align="center">
-                      <CPaginationItem :href="page.url" v-for="(page, index) in pages" :key="index" :active="page.active"><span v-html="page.label"></span></CPaginationItem>
-                    </CPagination>         
-                </CCol>
-                <AddPlacement 
-                  :show="showModal" 
-                  :flash="$props.flash"                  
-                  @update:show="showModal = $event"
-                />
-                <EditPlacement 
-                  :show="editModal" 
-                  :placement="$data.placement"
-                  :flash="$props.flash"
-                  @update:show="editModal = $event"
-                />                
-            </CCardBody>
-        </CCard>
+
+    <CCard v-if="isEmpty($props.placements.data)" class="mb-4 border-0 shadow-sm">
+        <CCardBody class="text-center">
+            <h6 class="mb-0"><CIcon icon="cil-ban"/> Nothing Found Here. </h6>
+        </CCardBody>
+    </CCard>
+
+    <CRow :xs="{ gutter: 4 }" class="mb-4">
+        <CCol v-for="placement in $props.placements.data" :key="placement.id" :md="6" :xl="4">
+            <CCard class="h-100 border-0 shadow-sm">
+                <CCardBody class="d-flex flex-column">
+                    <div class="d-flex align-items-start">
+                        <div>
+                            <h5 class="mb-1">{{ placement.name }}</h5>
+                            <CBadge color="info" class="text-capitalize">{{ placement.section.replace('-', ' ') }}</CBadge>
+                        </div>
+                        <CDropdown class="ms-auto">
+                            <CDropdownToggle color="link" :caret="false" class="p-0"><CIcon icon="cil-options" /></CDropdownToggle>
+                            <CDropdownMenu>
+                                <CDropdownItem href="#" @click="$edit(placement)">Edit</CDropdownItem>
+                                <CDropdownItem href="#" @click="$delete(placement)">Delete</CDropdownItem>
+                            </CDropdownMenu>
+                        </CDropdown>
+                    </div>
+
+                    <div class="fs-3 fw-semibold my-3">{{ placement.currency_price }}</div>
+
+                    <CRow class="mt-auto text-center g-0 border rounded">
+                        <CCol class="py-2 border-end">
+                            <div class="fw-semibold">{{ placement.promotions_count }}</div>
+                            <div class="small text-body-secondary">Adverts</div>
+                        </CCol>
+                        <CCol class="py-2">
+                            <div class="fw-semibold">{{ moment(placement.created_at).format('MMM D, YYYY') }}</div>
+                            <div class="small text-body-secondary">Created</div>
+                        </CCol>
+                    </CRow>
+                </CCardBody>
+            </CCard>
         </CCol>
     </CRow>
+
+    <CPagination aria-label="Page navigation" size="sm" align="center">
+        <CPaginationItem :href="page.url" v-for="(page, index) in pages" :key="index" :active="page.active"><span v-html="page.label"></span></CPaginationItem>
+    </CPagination>
+
+    <AddPlacement 
+        :show="showModal" 
+        :flash="$props.flash"                  
+        @update:show="showModal = $event"
+    />
+    <EditPlacement 
+        :show="editModal" 
+        :placement="$data.placement"
+        :flash="$props.flash"
+        @update:show="editModal = $event"
+    />                
 </AuthenticatedLayout>
 </template>
 
@@ -105,7 +101,7 @@ const $data: any = reactive({
   modal: false,
 });
 
-const pages = computed( () => !isEmpty($props.clients) ? $props.clients.links.filter( (link: any) => !isNull(link.url)) : [] );
+const pages = computed( () => !isEmpty($props.placements) ? $props.placements.links.filter( (link: any) => !isNull(link.url)) : [] );
 
 /**
  * Fetch categories from the server.

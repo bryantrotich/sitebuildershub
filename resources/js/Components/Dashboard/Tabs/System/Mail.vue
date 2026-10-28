@@ -1,5 +1,5 @@
 <template>
-    <CCard class="mb-4 shadow-0 border-0" id="mail">
+    <CCard class="mb-4 shadow-sm border-0" id="mail">
         <CCardBody>
             <CCol md="12">
                 <CCardTitle>SMTP Settings</CCardTitle>

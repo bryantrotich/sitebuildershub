@@ -2,57 +2,56 @@
 <AuthenticatedLayout>
     <Head title="Categories" />
     <CRow>
-        <CCol xs="12">
-        <CCard class="mb-4">
-            <CCardBody> 
-                <CRow>
-                    <CCol md="6">
-                        <h4>Categories</h4>
-                        <p class="text-muted">Manage your website categories to organize content effectively.</p>
-                    </CCol>
-                    <CCol md="6">
-                        <CButton color="primary" class="float-end" @click="showModal = true">Add Category</CButton>
-                    </CCol>
-                </CRow>
-                <CTable>
-                    <CTableHead>
-                        <CTableRow>
+        <CCol md="6">
+            <h4>Categories</h4>
+            <p class="text-muted">Manage your website categories to organize content effectively.</p>
+        </CCol>
+        <CCol md="6">
+            <CButton color="primary" class="float-end" @click="showModal = true">Add Category</CButton>
+        </CCol>
+    </CRow>
+    <CCard class="mb-4 border-0 shadow-sm">
+        <CCardBody>
+            <CTable align="middle" hover responsive>
+                <CTableHead>
+                    <CTableRow>
                         <CTableHeaderCell scope="col">#</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Name</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Sub Categories</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Child Sub Categories</CTableHeaderCell>
                         <CTableHeaderCell scope="col">Created On</CTableHeaderCell>
                         <CTableHeaderCell scope="col"></CTableHeaderCell>
-                        </CTableRow>
-                    </CTableHead>
-                    <CTableBody>
-                        <CTableRow v-for="(category, index) in $data.categories.data" :key="category.id">
-                            <CTableHeaderCell scope="row">{{ (index + 1) }}</CTableHeaderCell>
-                            <CTableDataCell>{{ category.name }}</CTableDataCell>
-                            <CTableDataCell><CBadge color="primary">{{ category.sub_categories_count }}</CBadge></CTableDataCell>
-                            <CTableDataCell><CBadge color="primary">{{ category.sub_categories_count }}</CBadge></CTableDataCell>
-                            <CTableDataCell>{{ category.created_at }}</CTableDataCell>
-                            <CTableDataCell>
-                                <CDropdown>
-                                    <CDropdownToggle color="link" :caret="false" class="p-0"><CIcon name="cil-options" /></CDropdownToggle>
-                                    <CDropdownMenu>
-                                        <CDropdownItem href="#" @click="$edit(category)">Edit</CDropdownItem>
-                                        <CDropdownItem href="#" @click="$delete(category)">Delete</CDropdownItem>
-                                    </CDropdownMenu>
-                                </CDropdown>
-                            </CTableDataCell>
-                        </CTableRow>
-                    </CTableBody>
-                </CTable>
-                <CCol md="12">
-                    <CPagination aria-label="Page navigation example" size="sm" align="center">
-                        <CPaginationItem :href="page.url" v-for="(page, index) in pages" :key="index" :active="page.active"><span v-html="page.label"></span></CPaginationItem>
-                    </CPagination>         
-                </CCol>
-            </CCardBody>
-        </CCard>
-        </CCol>
-    </CRow>
+                    </CTableRow>
+                </CTableHead>
+                <CTableBody>
+                    <CTableRow v-if="isEmpty($data.categories.data)">
+                        <CTableDataCell colspan="6" class="text-center">
+                            <h6 class="mb-0"><CIcon icon="cil-ban"/> Nothing Found Here. </h6>
+                        </CTableDataCell>
+                    </CTableRow>
+                    <CTableRow v-for="(category, index) in $data.categories.data" :key="category.id">
+                        <CTableHeaderCell scope="row">{{ ($data.categories.from ?? 1) + index }}</CTableHeaderCell>
+                        <CTableDataCell class="fw-semibold">{{ category.name }}</CTableDataCell>
+                        <CTableDataCell><CBadge color="primary">{{ category.sub_categories_count }}</CBadge></CTableDataCell>
+                        <CTableDataCell><CBadge color="info">{{ category.child_sub_categories_count }}</CBadge></CTableDataCell>
+                        <CTableDataCell>{{ category.created_at }}</CTableDataCell>
+                        <CTableDataCell class="text-end">
+                            <CDropdown>
+                                <CDropdownToggle color="link" :caret="false" class="p-0"><CIcon icon="cil-options" /></CDropdownToggle>
+                                <CDropdownMenu>
+                                    <CDropdownItem href="#" @click="$edit(category)">Edit</CDropdownItem>
+                                    <CDropdownItem href="#" @click="$delete(category)">Delete</CDropdownItem>
+                                </CDropdownMenu>
+                            </CDropdown>
+                        </CTableDataCell>
+                    </CTableRow>
+                </CTableBody>
+            </CTable>
+            <CPagination aria-label="Page navigation" size="sm" align="center">
+                <CPaginationItem :href="page.url" v-for="(page, index) in pages" :key="index" :active="page.active"><span v-html="page.label"></span></CPaginationItem>
+            </CPagination>
+        </CCardBody>
+    </CCard>
     <AddCategory 
         :show="showModal" 
         @update:show="showModal = $event"
