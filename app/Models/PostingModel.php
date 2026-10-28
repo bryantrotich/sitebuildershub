@@ -33,6 +33,7 @@ class PostingModel extends Model
      */
     protected $fillable = [
         'category_id',
+        'country',
         'county',
         'sub_category_id',
         'description',

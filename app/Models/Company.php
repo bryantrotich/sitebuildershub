@@ -26,12 +26,43 @@ class Company extends Model
         'address',
         'name',
         'email',
+        'google_maps_api_key',
+        'google_maps_id',
         'phone_number',
     ];
 
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * The maps settings are only sent to pages that explicitly need them.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'google_maps_api_key',
+        'google_maps_id',
+    ];
+
+    /**
+     * Get the Google Maps settings.
+     *
+     * Values saved in System settings take precedence over the ones in the .env file.
+     *
+     * @return array<string, mixed>
+     */
+    public static function maps(): array
+    {
+        $company = static::first();
+
+        return array_merge(config('services.google'), array_filter([
+            'api_key' => $company?->google_maps_api_key,
+            'id'      => $company?->google_maps_id,
+        ]));
+    }
+
     protected function icon(): Attribute {
         return Attribute::make(
-            get: fn ($value) => asset("storage/images/$value"),
+            get: fn ($value) => !empty($value) ? asset("storage/images/$value") : null,
         );
     }
 
@@ -45,7 +76,7 @@ class Company extends Model
      */
     protected function logo(): Attribute {
         return Attribute::make(
-            get: fn ($value) => asset("storage/images/$value"),
+            get: fn ($value) => !empty($value) ? asset("storage/images/$value") : null,
         );
     }
 

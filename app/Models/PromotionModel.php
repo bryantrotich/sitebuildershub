@@ -97,6 +97,18 @@ class PromotionModel extends Model
     }   
 
     /**
+     * Scope to paid promotions whose date range includes today.
+     */
+    public function scopeCurrent($query)
+    {
+        $today = now()->format('Y-m-d');
+
+        return $query->whereHas('invoice', fn ($sub_query) => $sub_query->where('status','paid'))
+            ->whereDate('date_from','<=',$today)
+            ->whereDate('date_to','>=',$today);
+    }
+
+    /**
      * Get the transaction that the promotion belongs to.
      *
      * This relationship is defined by the `targatable_id` foreign key on the `promotions` table,

@@ -52,14 +52,16 @@ class PlacementModel extends Model
     } 
 
 
+    /**
+     * Only placements with an advert running today, loading just those adverts.
+     *
+     * Constraining the eager load matters: without it every promotion on the
+     * placement (expired, upcoming or unpaid) would be returned with it.
+     */
     public function scopeFilterPromotion($query, $active=true){
-        return $query->whereHas('promotions', function ($sub_query) use ($active) {
-            return $sub_query->whereHas('invoice',function($sub_sub_query){
-                return $sub_sub_query->where('status','paid');
-            })
-            ->whereDate('date_from','<=',now()->format('Y-m-d'))
-            ->whereDate('date_to','>=',now()->format('Y-m-d'));
-        });
+        $current = fn ($sub_query) => $sub_query->current();
+
+        return $query->whereHas('promotions', $current)->with(['promotions' => $current]);
     }   
     
     /**
