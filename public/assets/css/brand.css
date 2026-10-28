@@ -1,0 +1,632 @@
+/*-----------------------------------------------------
+  SiteBuild Hub brand theme for the landing pages.
+
+  Loaded after bootstrap.css, theme.css, main.css and custom.css.
+  Colours come from the logo; adjust them here to retune the whole site.
+-----------------------------------------------------*/
+:root {
+  --brand-primary:        #3a3f9e; /* Logo indigo (SHB mark, tagline) */
+  --brand-primary-rgb:    58, 63, 158;
+  --brand-primary-hover:  #31358a;
+  --brand-primary-active: #2b2f7a;
+  --brand-primary-dark:   #23265f;
+  --brand-accent:         #f5c518; /* Logo gold (ring, tagline dots) */
+  --brand-accent-rgb:     245, 197, 24;
+  --brand-ink:            #2b2b2b; /* Logo wordmark charcoal */
+  --brand-surface:        #f7f7f8; /* Logo background */
+}
+
+/* ---- Hand-written accents ---- */
+
+/* Headings use the wordmark charcoal on light surfaces. Set through the template's
+   variable so dark sections (footer, .dark-mode-texts) keep their light headings. */
+body,
+body[data-theme='light'],
+.light-bg,
+.light-mode-texts {
+  --color-headings: var(--brand-ink);
+}
+.text-black-2 {
+  color: var(--brand-ink) !important;
+}
+
+.text-dodger,
+.text-blue,
+.hover-color-primary:hover {
+  color: var(--brand-primary) !important;
+}
+
+.bg-blue-opacity-1 {
+  background-color: rgba(var(--brand-primary-rgb), 0.1) !important;
+}
+
+/* Header navigation: gold underline on hover and on the active page. */
+.site-navbar .main-menu > li > .nav-link {
+  position: relative;
+}
+.site-navbar .main-menu > li > .nav-link:hover,
+.site-navbar .main-menu > li > .nav-link.active {
+  color: var(--brand-primary) !important;
+}
+.site-navbar .main-menu > li > .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+  width: 0;
+  height: 3px;
+  border-radius: 3px;
+  background-color: var(--brand-accent);
+  transform: translateX(-50%);
+  transition: width 0.2s ease;
+}
+.site-navbar .main-menu > li > .nav-link:hover::after,
+.site-navbar .main-menu > li > .nav-link.active::after {
+  width: 24px;
+}
+
+/* Footer and the dark panels of the login/sign-up modals use the deep indigo. */
+.footer.bg-ebony-clay,
+.bg-ebony-clay {
+  background-color: var(--brand-primary-dark) !important;
+}
+/* More specific than the generated .list-hover-primary / .hover-color-primary rules,
+   which would otherwise turn footer links indigo on the indigo background. */
+.footer.dark-mode-texts a:hover,
+.footer.dark-mode-texts .list-hover-primary a:hover,
+.footer.dark-mode-texts .hover-color-primary:hover {
+  color: var(--brand-accent) !important;
+}
+.bg-black-2.dark-mode-texts {
+  background-color: var(--brand-primary-dark) !important;
+}
+
+/* Outline buttons on cards fill with the brand colour on hover. */
+.btn-outline-green:hover,
+.btn-outline-primary:hover {
+  color: #fff !important;
+}
+
+/* Gold focus ring and text selection, echoing the logo ring. */
+.form-control:focus,
+.btn:focus,
+.nice-select:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-accent-rgb), 0.45);
+}
+::selection {
+  background-color: rgba(var(--brand-accent-rgb), 0.6);
+  color: var(--brand-ink);
+}
+
+/* Page-level surfaces pick up the logo background. */
+.bg-default-2 {
+  background-color: var(--brand-surface) !important;
+}
+
+/* Company logo from System settings. */
+.brand-logo .site-logo {
+  display: block;
+  height: 56px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+}
+/* The footer is dark, so the logo sits on a light card to stay legible. */
+.footer .footer-logo {
+  display: block;
+  height: 72px;
+  width: auto;
+  max-width: 220px;
+  object-fit: contain;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background-color: var(--brand-surface);
+}
+
+/* ---- Generated from bootstrap.css ---- */
+:root {
+  --green: var(--brand-primary);
+  --primary: var(--brand-primary);
+  --green: var(--brand-primary);
+}
+a {
+  color: var(--brand-primary);
+}
+a:hover {
+  color: var(--brand-primary-dark);
+}
+.valid-feedback {
+  color: var(--brand-primary);
+}
+.valid-tooltip {
+  background-color: rgba(var(--brand-primary-rgb), 0.9);
+}
+.was-validated .form-control:valid, .form-control.is-valid {
+  border-color: var(--brand-primary);
+}
+.was-validated .form-control:valid:focus, .form-control.is-valid:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-primary-rgb), 0.25);
+}
+.was-validated .custom-select:valid, .custom-select.is-valid {
+  border-color: var(--brand-primary);
+}
+.was-validated .custom-select:valid:focus, .custom-select.is-valid:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-primary-rgb), 0.25);
+}
+.was-validated .form-check-input:valid ~ .form-check-label, .form-check-input.is-valid ~ .form-check-label {
+  color: var(--brand-primary);
+}
+.was-validated .custom-control-input:valid ~ .custom-control-label, .custom-control-input.is-valid ~ .custom-control-label {
+  color: var(--brand-primary);
+}
+.was-validated .custom-control-input:valid ~ .custom-control-label::before, .custom-control-input.is-valid ~ .custom-control-label::before {
+  border-color: var(--brand-primary);
+}
+.was-validated .custom-control-input:valid:focus ~ .custom-control-label::before, .custom-control-input.is-valid:focus ~ .custom-control-label::before {
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-primary-rgb), 0.25);
+}
+.was-validated .custom-control-input:valid:focus:not(:checked) ~ .custom-control-label::before, .custom-control-input.is-valid:focus:not(:checked) ~ .custom-control-label::before {
+  border-color: var(--brand-primary);
+}
+.was-validated .custom-file-input:valid ~ .custom-file-label, .custom-file-input.is-valid ~ .custom-file-label {
+  border-color: var(--brand-primary);
+}
+.was-validated .custom-file-input:valid:focus ~ .custom-file-label, .custom-file-input.is-valid:focus ~ .custom-file-label {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-primary-rgb), 0.25);
+}
+.btn:focus, .btn.focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-primary-rgb), 0.25);
+}
+.btn-primary {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.btn-primary:hover {
+  background-color: var(--brand-primary-hover);
+  border-color: var(--brand-primary-active);
+}
+.btn-primary:focus, .btn-primary.focus {
+  background-color: var(--brand-primary-hover);
+  border-color: var(--brand-primary-active);
+}
+.btn-primary.disabled, .btn-primary:disabled {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.btn-primary:not(:disabled):not(.disabled):active, .btn-primary:not(:disabled):not(.disabled).active, .show > .btn-primary.dropdown-toggle {
+  background-color: var(--brand-primary-active);
+}
+.btn-green {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.btn-green:hover {
+  background-color: var(--brand-primary-hover);
+  border-color: var(--brand-primary-active);
+}
+.btn-green:focus, .btn-green.focus {
+  background-color: var(--brand-primary-hover);
+  border-color: var(--brand-primary-active);
+}
+.btn-green.disabled, .btn-green:disabled {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.btn-green:not(:disabled):not(.disabled):active, .btn-green:not(:disabled):not(.disabled).active, .show > .btn-green.dropdown-toggle {
+  background-color: var(--brand-primary-active);
+}
+.btn-outline-primary {
+  color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.btn-outline-primary:hover {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.btn-outline-primary:focus, .btn-outline-primary.focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-primary-rgb), 0.5);
+}
+.btn-outline-primary.disabled, .btn-outline-primary:disabled {
+  color: var(--brand-primary);
+}
+.btn-outline-primary:not(:disabled):not(.disabled):active, .btn-outline-primary:not(:disabled):not(.disabled).active, .show > .btn-outline-primary.dropdown-toggle {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.btn-outline-primary:not(:disabled):not(.disabled):active:focus, .btn-outline-primary:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-primary-rgb), 0.5);
+}
+.btn-outline-green {
+  color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.btn-outline-green:hover {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.btn-outline-green:focus, .btn-outline-green.focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-primary-rgb), 0.5);
+}
+.btn-outline-green.disabled, .btn-outline-green:disabled {
+  color: var(--brand-primary);
+}
+.btn-outline-green:not(:disabled):not(.disabled):active, .btn-outline-green:not(:disabled):not(.disabled).active, .show > .btn-outline-green.dropdown-toggle {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.btn-outline-green:not(:disabled):not(.disabled):active:focus, .btn-outline-green:not(:disabled):not(.disabled).active:focus, .show > .btn-outline-green.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-primary-rgb), 0.5);
+}
+.btn-link {
+  color: var(--brand-primary);
+}
+.btn-link:hover {
+  color: var(--brand-primary-dark);
+}
+.dropdown-item.active, .dropdown-item:active {
+  background-color: var(--brand-primary);
+}
+.custom-control-input:checked ~ .custom-control-label::before {
+  border-color: var(--brand-primary);
+  background-color: var(--brand-primary);
+}
+.custom-control-input:not(:disabled):active ~ .custom-control-label::before {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.custom-checkbox .custom-control-input:indeterminate ~ .custom-control-label::before {
+  border-color: var(--brand-primary);
+  background-color: var(--brand-primary);
+}
+.custom-checkbox .custom-control-input:disabled:checked ~ .custom-control-label::before {
+  background-color: rgba(var(--brand-primary-rgb), 0.5);
+}
+.custom-checkbox .custom-control-input:disabled:indeterminate ~ .custom-control-label::before {
+  background-color: rgba(var(--brand-primary-rgb), 0.5);
+}
+.custom-radio .custom-control-input:disabled:checked ~ .custom-control-label::before {
+  background-color: rgba(var(--brand-primary-rgb), 0.5);
+}
+.custom-switch .custom-control-input:disabled:checked ~ .custom-control-label::before {
+  background-color: rgba(var(--brand-primary-rgb), 0.5);
+}
+.custom-select:focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-primary-rgb), 0.25);
+}
+.custom-range::-webkit-slider-thumb {
+  background-color: var(--brand-primary);
+}
+.custom-range::-moz-range-thumb {
+  background-color: var(--brand-primary);
+}
+.custom-range::-ms-thumb {
+  background-color: var(--brand-primary);
+}
+.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+  background-color: var(--brand-primary);
+}
+.page-link:hover {
+  color: var(--brand-primary-dark);
+}
+.page-link:focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-primary-rgb), 0.25);
+}
+.page-item.active .page-link {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.badge-primary {
+  background-color: var(--brand-primary);
+}
+a.badge-primary:hover, a.badge-primary:focus {
+  background-color: var(--brand-primary-active);
+}
+a.badge-primary:focus, a.badge-primary.focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-primary-rgb), 0.5);
+}
+.badge-green {
+  background-color: var(--brand-primary);
+}
+a.badge-green:hover, a.badge-green:focus {
+  background-color: var(--brand-primary-active);
+}
+a.badge-green:focus, a.badge-green.focus {
+  box-shadow: 0 0 0 0.2rem rgba(var(--brand-primary-rgb), 0.5);
+}
+.progress-bar {
+  background-color: var(--brand-primary);
+}
+.list-group-item.active {
+  background-color: var(--brand-primary);
+  border-color: var(--brand-primary);
+}
+.bg-primary {
+  background-color: var(--brand-primary) !important;
+}
+a.bg-primary:hover, a.bg-primary:focus, button.bg-primary:hover, button.bg-primary:focus {
+  background-color: var(--brand-primary-active) !important;
+}
+.bg-green {
+  background-color: var(--brand-primary) !important;
+}
+a.bg-green:hover, a.bg-green:focus, button.bg-green:hover, button.bg-green:focus {
+  background-color: var(--brand-primary-active) !important;
+}
+.border-primary {
+  border-color: var(--brand-primary) !important;
+}
+.border-green {
+  border-color: var(--brand-primary) !important;
+}
+.text-primary {
+  color: var(--brand-primary) !important;
+}
+a.text-primary:hover, a.text-primary:focus {
+  color: var(--brand-primary-dark) !important;
+}
+.text-green {
+  color: var(--brand-primary) !important;
+}
+a.text-green:hover, a.text-green:focus {
+  color: var(--brand-primary-dark) !important;
+}
+/* ---- Generated from theme.css ---- */
+.header-cart span {
+  background: var(--brand-primary);
+}
+@media (min-width: 992px) {
+  .main-menu > li > .nav-link:before {
+    background: var(--brand-primary);
+  }
+}
+@media (min-width: 992px) {
+  .gr-menu-dropdown {
+    border-top: 3px solid var(--brand-primary);
+  }
+}
+.gr-menu-dropdown > .drop-menu-item:hover > a {
+  color: var(--brand-primary);
+}
+.gr-menu-dropdown > .drop-menu-item > .gr-menu-dropdown {
+  border-top-color: var(--brand-primary);
+}
+@media (min-width: 992px) {
+  .gr-megamenu-dropdown .mega-drop-menu-item:hover {
+    color: var(--brand-primary) !important;
+  }
+}
+@media (min-width: 992px) {
+  .gr-megamenu-dropdown-2 .mega-drop-menu-item:hover {
+    color: var(--brand-primary) !important;
+  }
+}
+@media (min-width: 320px) and (max-width: 992px) {
+  .offcanvas-active.navbar-expand-lg .navbar-collapse::-webkit-scrollbar-thumb {
+    background-color: var(--brand-primary);
+  }
+  .offcanvas-active.navbar-expand-lg .main-menu li:hover > a {
+    color: var(--brand-primary);
+  }
+}
+.bookmark-button:hover:before, .bookmark-button.clicked:before {
+  color: var(--brand-primary);
+}
+.filter-check-list a.clicked:before {
+  color: var(--brand-primary);
+}
+.gr-check-input input:checked ~ .checkbox {
+  background: var(--brand-primary) !important;
+  border-color: var(--brand-primary);
+}
+.gr-check-input input:checked ~ .checkbox::after {
+  border-color: var(--brand-primary);
+  background-color: var(--brand-primary);
+}
+.nice-select:active, .nice-select.open, .nice-select:focus {
+  border-color: rgba(var(--brand-primary-rgb), 0.22) !important;
+}
+.search-nav-tab .active > div {
+  border-color: var(--brand-primary);
+}
+.accordion-trigger.arrow-icon:after {
+  color: var(--brand-primary);
+}
+.dashboard-layout-sidebar li a:before {
+  background: var(--brand-primary);
+}
+@media (min-width: 992px) {
+  .dashboard-layout-sidebar li a:hover > i {
+    color: var(--brand-primary);
+  }
+}
+.dashboard-layout-sidebar li.active a > i {
+  color: var(--brand-primary);
+}
+.sidebar-mobile-button {
+  background: var(--brand-primary);
+}
+.bg-primary-opacity-visible {
+  background-color: var(--brand-primary);
+}
+.bg-primary-opacity-1 {
+  background-color: rgba(var(--brand-primary-rgb), 0.1);
+}
+.bg-primary-opacity-15 {
+  background-color: rgba(var(--brand-primary-rgb), 0.15);
+}
+.bg-primary-opacity-2 {
+  background-color: rgba(var(--brand-primary-rgb), 0.2);
+}
+.bg-primary-opacity-3 {
+  background-color: rgba(var(--brand-primary-rgb), 0.3);
+}
+.bg-primary-opacity-4 {
+  background-color: rgba(var(--brand-primary-rgb), 0.4);
+}
+.bg-primary-opacity-5 {
+  background-color: rgba(var(--brand-primary-rgb), 0.5);
+}
+.bg-primary-opacity-6 {
+  background-color: rgba(var(--brand-primary-rgb), 0.6);
+}
+.bg-primary-opacity-p6 {
+  background-color: rgba(var(--brand-primary-rgb), 0.06);
+}
+.bg-primary-opacity-7 {
+  background-color: rgba(var(--brand-primary-rgb), 0.7);
+}
+.bg-primary-opacity-8 {
+  background-color: rgba(var(--brand-primary-rgb), 0.8);
+}
+.bg-primary-opacity-9 {
+  background-color: rgba(var(--brand-primary-rgb), 0.9);
+}
+.gr-color-primary-opacity-visible {
+  color: var(--brand-primary);
+}
+.gr-color-primary-opacity-1 {
+  color: rgba(var(--brand-primary-rgb), 0.1);
+}
+.gr-color-primary-opacity-15 {
+  color: rgba(var(--brand-primary-rgb), 0.15);
+}
+.gr-color-primary-opacity-2 {
+  color: rgba(var(--brand-primary-rgb), 0.2);
+}
+.gr-color-primary-opacity-3 {
+  color: rgba(var(--brand-primary-rgb), 0.3);
+}
+.gr-color-primary-opacity-4 {
+  color: rgba(var(--brand-primary-rgb), 0.4);
+}
+.gr-color-primary-opacity-5 {
+  color: rgba(var(--brand-primary-rgb), 0.5);
+}
+.gr-color-primary-opacity-6 {
+  color: rgba(var(--brand-primary-rgb), 0.6);
+}
+.gr-color-primary-opacity-p6 {
+  color: rgba(var(--brand-primary-rgb), 0.06);
+}
+.gr-color-primary-opacity-7 {
+  color: rgba(var(--brand-primary-rgb), 0.7);
+}
+.gr-color-primary-opacity-8 {
+  color: rgba(var(--brand-primary-rgb), 0.8);
+}
+.gr-color-primary-opacity-9 {
+  color: rgba(var(--brand-primary-rgb), 0.9);
+}
+.bg-green-opacity-visible {
+  background-color: var(--brand-primary);
+}
+.bg-green-opacity-1 {
+  background-color: rgba(var(--brand-primary-rgb), 0.1);
+}
+.bg-green-opacity-15 {
+  background-color: rgba(var(--brand-primary-rgb), 0.15);
+}
+.bg-green-opacity-2 {
+  background-color: rgba(var(--brand-primary-rgb), 0.2);
+}
+.bg-green-opacity-3 {
+  background-color: rgba(var(--brand-primary-rgb), 0.3);
+}
+.bg-green-opacity-4 {
+  background-color: rgba(var(--brand-primary-rgb), 0.4);
+}
+.bg-green-opacity-5 {
+  background-color: rgba(var(--brand-primary-rgb), 0.5);
+}
+.bg-green-opacity-6 {
+  background-color: rgba(var(--brand-primary-rgb), 0.6);
+}
+.bg-green-opacity-p6 {
+  background-color: rgba(var(--brand-primary-rgb), 0.06);
+}
+.bg-green-opacity-7 {
+  background-color: rgba(var(--brand-primary-rgb), 0.7);
+}
+.bg-green-opacity-8 {
+  background-color: rgba(var(--brand-primary-rgb), 0.8);
+}
+.bg-green-opacity-9 {
+  background-color: rgba(var(--brand-primary-rgb), 0.9);
+}
+.gr-color-green-opacity-visible {
+  color: var(--brand-primary);
+}
+.gr-color-green-opacity-1 {
+  color: rgba(var(--brand-primary-rgb), 0.1);
+}
+.gr-color-green-opacity-15 {
+  color: rgba(var(--brand-primary-rgb), 0.15);
+}
+.gr-color-green-opacity-2 {
+  color: rgba(var(--brand-primary-rgb), 0.2);
+}
+.gr-color-green-opacity-3 {
+  color: rgba(var(--brand-primary-rgb), 0.3);
+}
+.gr-color-green-opacity-4 {
+  color: rgba(var(--brand-primary-rgb), 0.4);
+}
+.gr-color-green-opacity-5 {
+  color: rgba(var(--brand-primary-rgb), 0.5);
+}
+.gr-color-green-opacity-6 {
+  color: rgba(var(--brand-primary-rgb), 0.6);
+}
+.gr-color-green-opacity-p6 {
+  color: rgba(var(--brand-primary-rgb), 0.06);
+}
+.gr-color-green-opacity-7 {
+  color: rgba(var(--brand-primary-rgb), 0.7);
+}
+.gr-color-green-opacity-8 {
+  color: rgba(var(--brand-primary-rgb), 0.8);
+}
+.gr-color-green-opacity-9 {
+  color: rgba(var(--brand-primary-rgb), 0.9);
+}
+.shadow-10 {
+  box-shadow: 5px 5px 10px rgba(var(--brand-primary-rgb), 0.16);
+}
+a.hover-color-primary:hover {
+  color: var(--brand-primary) !important;
+}
+.hover-bg-green:hover, a.hover-bg-green:hover {
+  background-color: var(--brand-primary) !important;
+}
+.hover-border-green:hover {
+  border: 2px solid var(--brand-primary);
+}
+.list-hover-primary a:hover {
+  color: var(--brand-primary) !important;
+}
+.tab-menu-items a:hover, .tab-menu-items a.active {
+  border-bottom: 2px solid var(--brand-primary);
+  color: var(--brand-primary);
+}
+.pagination.page-link.active {
+  color: var(--brand-primary) !important;
+}
+.pagination-hover-primary .page-link:hover {
+  color: var(--brand-primary) !important;
+}
+.bg-gradient-1 {
+  background-image: linear-gradient(to right, rgba(var(--brand-primary-rgb), 0.1) 0%, rgba(88, 88, 0, 0.05) 100%);
+}
+.testimonial-slider-one .slick-dots li.slick-active {
+  background-color: var(--brand-primary);
+}
+.pm-range-slider .ui-widget-header {
+  background: var(--brand-primary);
+}
+.active-item-black {
+  color: var(--brand-primary);
+}

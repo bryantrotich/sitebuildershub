@@ -5,7 +5,10 @@
       <div class="row">
         <div class="col-lg-4 col-sm-6 mb-lg-0 mb-9">
           <!-- footer logo start -->
-          <img src="image/logo-main-white.png" alt="" class="footer-logo mb-14">
+          <a :href="route('landing.home')" class="d-inline-block mb-14">
+            <img v-if="company?.logo" :src="company.logo" :alt="company.name" class="footer-logo">
+            <span v-else class="font-size-6 font-weight-bold text-white">{{ company?.name }}</span>
+          </a>
           <!-- footer logo End -->
           <!-- media start -->
           <div class="media mb-11">
@@ -97,6 +100,11 @@ const logout    = async () => router.post(route('landing.logout'));
  * @return {Object} - The authenticated user object.
  */
 const auth_user = computed( () => usePage().props.auth.user )
+
+/**
+ * The company details (name, logo, icon) shared with every page.
+ */
+const company   = computed( () => usePage().props.company )
 
 const advert_images = computed( 
     () => $data.placements

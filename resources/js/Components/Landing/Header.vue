@@ -6,11 +6,9 @@
         <nav class="navbar site-navbar offcanvas-active navbar-expand-lg  px-0 py-0">
           <!-- Brand Logo-->
           <div class="brand-logo">
-            <a href="./index.html">
-              <!-- light version logo (logo must be black)-->
-              <!-- <img src="../../../image/logo-main-black.png" alt="" class="light-version-logo default-logo"> -->
-              <!-- Dark version logo (logo must be White)-->
-              <!-- <img src="../../../image/logo-main-white.png" alt="" class="dark-version-logo"> -->
+            <a :href="route('landing.home')" class="d-flex align-items-center">
+              <img v-if="company?.logo" :src="company.logo" :alt="company.name" class="site-logo">
+              <span v-else class="font-size-6 font-weight-bold text-black-2">{{ company?.name }}</span>
             </a>
           </div>
           <div class="collapse navbar-collapse" id="mobile-menu">
@@ -131,6 +129,11 @@ const logout    = async () => router.post(route('landing.logout'));
  * @return {Object} - The authenticated user object.
  */
 const auth_user = computed( () => usePage().props.auth.user )
+
+/**
+ * The company details (name, logo, icon) shared with every page.
+ */
+const company   = computed( () => usePage().props.company )
 
 const advert_images = computed( 
     () => $data.placements

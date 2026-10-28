@@ -23,7 +23,7 @@
                 :loop="true" 
                 :pagination="{clickable: false}"
                 :centeredSlides="true"
-                :autoplay="{delay: 2000,disableOnInteraction: false}"  
+                :autoplay="{delay: 5000,disableOnInteraction: false}"  
                 style="z-index: 0;"      
                 v-if="!isEmpty(banner_images)"     
             >

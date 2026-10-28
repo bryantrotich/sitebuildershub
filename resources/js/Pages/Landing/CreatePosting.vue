@@ -17,18 +17,16 @@
                                     <Transition name="slide-fade">
                                         <div class="tab-pane fade show active" v-if="$data.tab == 1" id="home" role="tabpanel" aria-labelledby="home-tab">
                                             <div class="row">
-                                                <div class="col-12">
+                                                <div class="col-12 mb-4">
                                                     <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Location</label>
-                                                    <select class="form-control w-100" v-model="$data.active_form.location">
-                                                        <option value="">Select Location*</option>
-                                                        <template v-for="(towns,key) in locations">
-                                                            <optgroup :label="key">
-                                                                <option v-for="(town) in towns" :value="`${key}-${town}`">{{ town }}</option>
-                                                            </optgroup>
-                                                        </template>                                                                                    
-                                                    </select>
-                                                   
+                                                    <LocationPicker
+                                                        v-model="location"
+                                                        :api-key="pageProps.maps.api_key"
+                                                        :map-id="pageProps.maps.id"
+                                                        :error="$data.errors.location ?? $data.errors.town"
+                                                    />
                                                     <p v-show="has($data.errors,'location')" class="text-danger">{{ $data.errors.location }}</p>              
+                                                    <p v-show="!has($data.errors,'location') && has($data.errors,'town')" class="text-danger">{{ $data.errors.town }}</p>              
                                                 </div>                                
                                                 <div class="col-12 mb-4">
                                                     <label for="" class="font-size-4 font-weight-semibold text-black-2 mb-5 line-height-reset">Category</label>
@@ -235,10 +233,11 @@ import vueDropzone from 'dropzone-vue3';
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 import { object, string, number, date, InferType, array, mixed, boolean, ref } from 'yup';
-import { isEmpty, has, cloneDeep, get, each, flatten, keys, set, flattenDeep, flattenDepth, add } from 'lodash';
+import { isEmpty, has, cloneDeep, get, each, flatten, keys, set, flattenDeep, flattenDepth, add, pick } from 'lodash';
 import moment from 'moment';
 import VuePictureCropper, { cropper } from 'vue-picture-cropper'
 import Multiselect from 'vue-multiselect'
+import { LocationPicker } from '@/Components/Landing';
 
 const $data: any  = reactive({
     active_form:   {},
@@ -303,6 +302,9 @@ const $data: any  = reactive({
             categories:   Array(),
             sub_categories:   Array(),
             location:     String(),     
+            town:         String(),
+            county:       String(),
+            country:      String(),
             images:       Array(),
         },
         {
@@ -325,6 +327,9 @@ const $data: any  = reactive({
             categories:   array().min(1,'*At least one category is needed.').required("*Category is required"),
             sub_categories:   array().min(1,'*At least one sub category is needed.').required("*Sub Category is required"),
             location:     string().required("*Location is required"),
+            town:         string().required("*Please choose a more specific location, such as a town or city"),
+            county:       string().required("*County could not be determined, please choose another location"),
+            country:      string().required("*Country could not be determined, please choose another location"),
             images:       array().min(1,'*Please select at least one image').required("*Please select at least one image"),
         },
         {
@@ -460,7 +465,11 @@ const sub_categories: any = computed(
     }
 );
 
-const locations: any      = computed( () => usePage().props.locations );
+// Bridges the location picker to the flat location/town/county/country form fields.
+const location: any       = computed({
+    get: () => pick($data.active_form, ['location','town','county','country']),
+    set: (value: any) => Object.assign($data.active_form, pick(value, ['location','town','county','country'])),
+});
 
 const pageProps:  any     = computed( () => usePage().props );
 
@@ -655,6 +664,9 @@ const resetForm = () => {
         {
             category:     String(),
             location:     String(),     
+            town:         String(),
+            county:       String(),
+            country:      String(),
             images:       Array(),
         },
         {

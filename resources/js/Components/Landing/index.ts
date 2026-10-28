@@ -15,4 +15,4 @@ export { default as SubscriptionTab } from './Tabs/Subscription.vue';
 export { default as Comment } from './Comment.vue';
 
 // Components
-export { default as TrendingPosting } from './TrendingPosting.vue';
+export { default as TrendingPosting } from './TrendingPosting.vue';export { default as LocationPicker } from './LocationPicker.vue';
