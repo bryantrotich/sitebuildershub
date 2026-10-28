@@ -15,7 +15,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = CategoryModel::withCount(['subCategories'])->paginate(10);
+        $categories = CategoryModel::withCount(['subCategories','childSubCategories'])->paginate(10);
 
         return Inertia::render('Dashboard/Category',[
             'status'     => session('status'),

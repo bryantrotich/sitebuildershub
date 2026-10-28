@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -13,7 +14,13 @@ class StaffController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Staff',[
+        $staff = User::with('role')
+            ->whereHas('role',fn($query) => $query->where('state','>',0))
+            ->orderByDesc('created_at')
+            ->paginate(10);
+
+        return Inertia::render('Dashboard/Staff',[
+            'staff'  => $staff,
             'status' => session('status')
         ]);
     }

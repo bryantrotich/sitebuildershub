@@ -23,7 +23,7 @@ class HomeController extends Controller
         $categories     = SubCategoryModel::with(['category'])->withCount(['postings'])->get();
         $subscriptions  = SubscriptionModel::get();
         $postings       = PostingModel::get()->sortBy('views_count');
-        $placements     = PlacementModel::with(['promotions'])->whereIn('section',['top-banner'])->filterPromotion()->get();
+        $placements     = PlacementModel::whereIn('section',['top-banner'])->filterPromotion()->get();
         $count_postings = PostingModel::count();
 
         // $poromotions = PromotionModel::active()->whereBetween()
@@ -39,7 +39,7 @@ class HomeController extends Controller
     {
         //
 
-        $placements  = PlacementModel::with(['promotions'])->whereIn('section',['leader-banner'])->filterPromotion()->get();
+        $placements  = PlacementModel::whereIn('section',['leader-banner'])->filterPromotion()->get();
 
         return response()->json(compact('placements'),200);
 
@@ -52,7 +52,7 @@ class HomeController extends Controller
     {
         //
 
-        $placements  = PlacementModel::with(['promotions'])->whereIn('section',['footer'])->filterPromotion()->get();
+        $placements  = PlacementModel::whereIn('section',['footer'])->filterPromotion()->get();
 
         return response()->json(compact('placements'),200);
 
@@ -65,7 +65,7 @@ class HomeController extends Controller
     {
         //
 
-        $placements  = PlacementModel::with(['promotions'])->whereIn('section',['signup','login'])->filterPromotion()->get();
+        $placements  = PlacementModel::whereIn('section',['signup','login'])->filterPromotion()->get();
 
         return response()->json(compact('placements'),200);
 

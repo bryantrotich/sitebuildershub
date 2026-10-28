@@ -24,6 +24,7 @@ class PostingController extends Controller
         // Retrieve the postings with their category and subcategory
         // and paginate them
         $postings = PostingModel::with(['categories','user'])
+            ->withCount(['views as views_total','comments as comments_total'])
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 

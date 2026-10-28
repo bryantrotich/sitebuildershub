@@ -43,6 +43,18 @@ class CreatePostingRequest extends FormRequest
                 'string',
                 'required'
             ],
+            'town' => [
+                'string',
+                'required'
+            ],
+            'county' => [
+                'string',
+                'required'
+            ],
+            'country' => [
+                'string',
+                'required'
+            ],
             'quotation' => [
                 'string',
                 'required'

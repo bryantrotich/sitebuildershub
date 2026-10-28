@@ -14,7 +14,11 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        $clients = User::whereHas('role',fn($query) => $query->where('state',0))->paginate(10);
+        $clients = User::whereHas('role',fn($query) => $query->where('state',0))
+            ->with('business_profile')
+            ->withCount(['postings', 'projects', 'invoices as unpaid_invoices_count' => fn($query) => $query->where('status', 'unpaid')])
+            ->orderByDesc('created_at')
+            ->paginate(12);
 
         return Inertia::render('Dashboard/Clients',[
             'clients' => $clients,

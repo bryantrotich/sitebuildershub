@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Landing;
 
+use App\Models\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Landing\BusinessProfileRequest;
 use App\Http\Requests\Landing\CreateProjectRequest;
@@ -63,7 +64,7 @@ class ProfileController extends Controller
                 $data['active_subscription'] = $user->active_subscription;
             break;                                    
             case 'business':
-                $data['maps']              = config('services.google');
+                $data['maps']              = Company::maps();
                 $data['business_profile']  = $user->business_profile;
                 $data['stores']            = !empty($data['business_profile']) ? $data['business_profile']->stores : array();
             break;

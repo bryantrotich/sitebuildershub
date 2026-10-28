@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Landing;
 
+use App\Models\Company;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Landing\CreatePostingRequest;
 use App\Http\Requests\Landing\CreatePromotionPostingRequest;
@@ -51,10 +52,10 @@ class MyPostingsController extends Controller
 
         $categories     = CategoryModel::with(['subCategories','childSubCategories'])->get();
         $placements     = PlacementModel::get();
-        $locations      = config('location');
+        $maps           = Company::maps();
         $status         = session('status');
 
-        return Inertia::render('Landing/CreatePosting',compact('categories','locations','placements','status'));
+        return Inertia::render('Landing/CreatePosting',compact('categories','maps','placements','status'));
     }
 
     /**
@@ -149,9 +150,6 @@ class MyPostingsController extends Controller
                 
                 $form['promotion_image'] = $name;
             }
-
-            $form['county']          = explode('-', $form['location'])[0];
-            $form['town']            = explode('-', $form['location'])[1];
 
             $form['user_id']         = auth('client')->user()->id;
 

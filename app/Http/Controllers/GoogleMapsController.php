@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Company;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,7 @@ class GoogleMapsController extends Controller
     public function create(Request $request)
     {
         try {
-            $maps = config('services.google');
+            $maps = Company::maps();
             
             $response = Http::withHeaders([
                 'Access-Control-Allow-Origin' => '*'

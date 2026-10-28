@@ -18,7 +18,7 @@ class PostingController extends Controller
     {
         $postings    = PostingModel::with(['categories']);
         $categories  = CategoryModel::with(['subCategories','childSubCategories'])->get();
-        $placements  = PlacementModel::with(['promotions'])->whereIn('section',['advert'])->filterPromotion()->get();
+        $placements  = PlacementModel::whereIn('section',['advert'])->filterPromotion()->get();
         $queryParams = $request->query();
         $locations   = config('location');
         $status      = session('status');

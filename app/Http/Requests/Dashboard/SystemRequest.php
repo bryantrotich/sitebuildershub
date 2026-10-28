@@ -28,17 +28,19 @@ class SystemRequest extends FormRequest
             'tab' => [
                 'required',
                 'string',
-                'in:images,mail,payment'
+                'in:images,mail,maps,payment'
             ],
             'logo' => [
-                'sometimes',
-                'required_if:tab,images',
-                File::image()->types('jpeg,png,jpg')->max(2048)
+                'exclude_unless:tab,images',
+                'nullable',
+                'required_without:icon',
+                File::image()->types(['jpeg','jpg','png','webp'])->max(2048)
             ],
             'icon' => [
-                'sometimes',
-                'required_if:tab,images',
-                File::image()->types('jpeg,png,jpg')->max(2048)
+                'exclude_unless:tab,images',
+                'nullable',
+                'required_without:logo',
+                File::image()->types(['jpeg','jpg','png','webp'])->max(1024)
             ],
             'host' => [
                 'required_if:tab,mail',
@@ -55,6 +57,22 @@ class SystemRequest extends FormRequest
             'username' => [
                 'required_if:tab,mail',
                 'string'
+            ],
+            'google_maps_api_key' => [
+                'required_if:tab,maps',
+                'nullable',
+                'string',
+                'max:255'
+            ],
+            'google_maps_id' => [
+                'nullable',
+                'string',
+                'max:255'
+            ],
+            'action' => [
+                'required_if:tab,payment',
+                'nullable',
+                'in:test'
             ]
         ];
     }
