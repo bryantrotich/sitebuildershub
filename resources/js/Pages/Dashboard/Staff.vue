@@ -6,6 +6,9 @@
             <h4>Staff</h4>
             <p class="text-muted">View the administrators and staff members who manage the platform.</p>
         </CCol>
+        <CCol md="6" v-if="$props.can_manage">
+            <CButton color="primary" class="float-end" @click="showModal = true">Add Staff</CButton>
+        </CCol>
     </CRow>
     <CCard class="mb-4 border-0 shadow-sm">
         <CCardBody>
@@ -50,19 +53,31 @@
             </CPagination>
         </CCardBody>
     </CCard>
+    <AddStaff
+        v-if="$props.can_manage"
+        :roles="$props.roles"
+        :show="showModal"
+        @update:show="showModal = $event"
+    />
 </AuthenticatedLayout>
 </template>
 
 <script setup lang="ts">
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { AddStaff } from '@/Components/Dashboard';
 import { Head } from '@inertiajs/vue3';
 import { isEmpty, isNull } from 'lodash';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
+
+// Modal visibility state
+const showModal = ref(false);
 
 // In your Vue component
 const $props: any = defineProps({
-    staff: Object,
-    status: String
+    can_manage: Boolean,
+    roles:      Array,
+    staff:      Object,
+    status:     String
 });
 
 const pages = computed( () => !isEmpty($props.staff) ? $props.staff.links.filter( (link: any) => !isNull(link.url)) : [] );

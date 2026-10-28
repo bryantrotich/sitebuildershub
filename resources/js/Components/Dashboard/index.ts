@@ -5,6 +5,7 @@ export { default as SettingsTabs } from './SettingsTabs.vue';
 
 // Modals
 export { default as AddCategory } from './Modals/AddCategory.vue';
+export { default as AddStaff } from './Modals/AddStaff.vue';
 export { default as AddSubCategory } from './Modals/AddSubCategory.vue';
 export { default as AddChildSubCategory } from './Modals/AddChildSubCategory.vue';
 export { default as AddSubscription } from './Modals/AddSubscription.vue';

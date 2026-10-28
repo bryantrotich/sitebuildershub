@@ -1,76 +1,73 @@
 <template>
     <GuestLayout>
         <Head title="Sign In" />
-        <CCol :lg="5" :md="6" :sm="10" :xs="12">
-            <CCardGroup>
-                <CCard class="p-4">
-                    <CCardBody>
-                        <CForm @submit.prevent="submit">
-                            <CCol :xs="12" class="text-center">
-                                <h1>Login</h1>
-                                <p class="text-body-secondary">Sign In to your account</p>
-                            </CCol>
-                            <div v-if="status" class="mb-4 text-sm font-medium text-green-600">
-                                {{ status }}
-                            </div>
-                            <CCol class="mb-3">
-                                <CInputGroup>
-                                    <CInputGroupText>
-                                        <CIcon icon="cil-user" />
-                                    </CInputGroupText>
-                                    <CFormInput
-                                        placeholder="Email Address"
-                                        autocomplete="email"
-                                        v-model="form.email"
-                                        :invalid="has($data.errors,'email')"
-                                    />
-                                </CInputGroup>
-                                <p v-if="has($data.errors,'email')" class="text-danger">{{ $data.errors.email }}</p>   
-                            </CCol>           
-                            <CCol class="mb-3">
-                                <CInputGroup>
-                                    <CInputGroupText>
-                                        <CIcon icon="cil-lock-locked" />
-                                    </CInputGroupText>
-                                    <CFormInput
-                                        type="password"
-                                        placeholder="Password"
-                                        autocomplete="current-password"
-                                        v-model="form.password"
-                                        :invalid="has($data.errors,'password')"
-                                    />
-                                </CInputGroup>
-                                <p v-if="has($data.errors,'password')" class="text-danger">{{ $data.errors.password }}</p>   
-                            </CCol>           
-                            <CRow>
-                                <CButton color="primary" class="px-4" type="submit" :disabled="form.processing"><CSpinner size="sm" v-if="form.processing"/> Login </CButton>
-                                <CButton color="link" class="px-0">Forgot password?</CButton>
-                            </CRow>
-                        </CForm>
-                    </CCardBody>
-                </CCard>
-            </CCardGroup>
-        </CCol>
+        <h3 class="mb-1">Welcome back</h3>
+        <p class="text-body-secondary mb-4">Sign in to the admin dashboard.</p>
+
+        <CAlert v-if="status" color="success" class="small">{{ status }}</CAlert>
+
+        <CForm @submit.prevent="submit" novalidate>
+            <div class="mb-3">
+                <CFormLabel for="email">Email Address</CFormLabel>
+                <CInputGroup>
+                    <CInputGroupText><CIcon icon="cil-envelope-closed" /></CInputGroupText>
+                    <CFormInput
+                        id="email"
+                        type="email"
+                        placeholder="you@example.com"
+                        autocomplete="email"
+                        autofocus
+                        v-model="form.email"
+                        :invalid="has(form.errors,'email')"
+                    />
+                </CInputGroup>
+                <div v-if="has(form.errors,'email')" class="text-danger small mt-1">{{ form.errors.email }}</div>
+            </div>
+
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-baseline">
+                    <CFormLabel for="password">Password</CFormLabel>
+                    <Link :href="route('dashboard.password.request')" class="small text-decoration-none">Forgot password?</Link>
+                </div>
+                <CInputGroup>
+                    <CInputGroupText><CIcon icon="cil-lock-locked" /></CInputGroupText>
+                    <CFormInput
+                        id="password"
+                        :type="showPassword ? 'text' : 'password'"
+                        placeholder="Password"
+                        autocomplete="current-password"
+                        v-model="form.password"
+                        :invalid="has(form.errors,'password')"
+                    />
+                    <CButton type="button" color="secondary" variant="outline" @click="showPassword = !showPassword">
+                        {{ showPassword ? 'Hide' : 'Show' }}
+                    </CButton>
+                </CInputGroup>
+                <div v-if="has(form.errors,'password')" class="text-danger small mt-1">{{ form.errors.password }}</div>
+            </div>
+
+            <CFormCheck id="remember" label="Remember me" v-model="form.remember" class="mb-4" />
+
+            <CButton color="primary" type="submit" class="w-100 py-2" :disabled="form.processing">
+                <CSpinner v-if="form.processing" size="sm" class="me-1" />Sign In
+            </CButton>
+        </CForm>
     </GuestLayout>
 </template>
 <script setup lang="ts">
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
-import { cloneDeep, has } from 'lodash';
-import { computed, reactive, watch} from 'vue';
+import { has } from 'lodash';
+import { computed, ref } from 'vue';
 
 defineProps<{
-    errors: any;
-    canResetPassword?: boolean;
     status?: string;
 }>();
 
-const $data  = reactive({
-  errors: Object(),  
-});
 const pageProps: any = computed( () => usePage().props );
 
-// const $data: any = 
+const showPassword = ref(false);
+
 /**
  * The login form data.
  *
@@ -82,34 +79,15 @@ const form = useForm({
     _token:   pageProps.value.csrf_token,
     email:    String(),
     password: String(),
-    remember: Boolean(),
+    remember: false,
 });
 
 /**
- * Submits the login form.
- *
- * Posts the form data to the `login` route and resets the password field
- * on success.
+ * Submits the login form and clears the password afterwards.
  */
 const submit = () => {
     form.post(route('dashboard.login.store'), {
-        onError: (value:any) => {
-            console.log(value)
-        },
-        /**
-         * Resets the password field on success.
-         */
-        onFinish: () => {
-            form.reset('password');
-        },
+        onFinish: () => form.reset('password'),
     });
 };
-
-watch(
-  () => usePage().props.errors,
-  (value:any) => {
-    $data.errors = cloneDeep(value);
-  },
-  { deep: true },
-)
 </script>
