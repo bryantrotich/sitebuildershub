@@ -20,6 +20,7 @@ use App\Http\Controllers\Dashboard\StaffController;
 use App\Http\Controllers\Dashboard\SubscriptionController;
 use App\Http\Controllers\Dashboard\SystemController;
 use App\Http\Controllers\Dashboard\LoginController as DashboardLoginController;
+use App\Http\Controllers\Dashboard\ForgotPasswordController as DashboardForgotPasswordController;
 use App\Http\Controllers\Landing\SignupController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,11 @@ Route::name('dashboard.')->prefix('dashboard')->group(function () {
     Route::middleware('admin.guest')->group(function () {
         Route::get('/login',                 [DashboardLoginController::class, 'index'])->name('login');
         Route::post('/login',                [DashboardLoginController::class, 'store'])->name('login.store');
+
+        Route::get('/forgot-password',         [DashboardForgotPasswordController::class, 'create'])->name('password.request');
+        Route::post('/forgot-password',        [DashboardForgotPasswordController::class, 'store'])->name('password.email');
+        Route::get('/reset-password/{token}',  [DashboardForgotPasswordController::class, 'edit'])->name('password.reset');
+        Route::post('/reset-password',         [DashboardForgotPasswordController::class, 'update'])->name('password.store');
     });
     Route::middleware('admin.auth')->group(function () {
         Route::post('/logout',      [DashboardLoginController::class, 'destroy'])->name('logout');

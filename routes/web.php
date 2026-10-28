@@ -141,6 +141,7 @@ Route::name('dashboard.')->prefix('dashboard')->group(function () {
         Route::get('/postings',           [DashboardPostingController::class, 'index'])->name('postings');
 
         Route::get('/staff',                 [StaffController::class,    'index'])->name('staff');
+        Route::post('/staff',                [StaffController::class,    'store'])->name('staff.store');
         Route::get('/system',                [SystemController::class,   'index'])->name('system');
         Route::post('/system',               [SystemController::class,   'store'])->name('system.store');
         Route::get('/profile',               [DashboardProfileController::class,   'index'])->name('profile'); 
